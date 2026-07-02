@@ -4,7 +4,7 @@ import sys
 
 
 def validate_and_clean_data(
-    input_file="data/titanic_train.csv",
+    input_file="data/titanic.csv",
     output_file="data/processed_dataset.csv"
 ):
     """
