@@ -22,10 +22,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install pandas
+          pip install pytest
+          # If you have requirements.txt:
+          # pip install -r requirements.txt
 
       - name: Run automated tests
-        run: pytest
+        run: |
+          python -m pytest tests/ -v
+          # Or if you want to keep just 'pytest':
+          # pytest tests/ -v
 
       - name: Run validation on data
         run: python src/validation_code.py
