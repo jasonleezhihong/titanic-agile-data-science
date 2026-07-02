@@ -5,7 +5,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.remove_duplicates import remove_duplicates
+from src.validation_code import validate_and_clean_data
 
 class TestValidationCode(unittest.TestCase):
     """Test cases for data validation functionality"""
@@ -28,7 +28,7 @@ class TestValidationCode(unittest.TestCase):
     def test_remove_duplicates(self):
         """Test that duplicates are correctly removed"""
         # Run duplicate removal
-        result = remove_duplicates(self.test_input, self.test_output)
+        result = validate_and_clean_data(self.test_input, self.test_output)
         
         # Check if function ran successfully
         self.assertTrue(result)
@@ -61,7 +61,7 @@ class TestValidationCode(unittest.TestCase):
         no_dup_data.to_csv(no_dup_input, index=False)
         
         # Run duplicate removal
-        result = remove_duplicates(no_dup_input, no_dup_output)
+        result = validate_and_clean_data(no_dup_input, no_dup_output)
         self.assertTrue(result)
         
         # Check that no rows were removed (still 4 rows)
@@ -74,7 +74,7 @@ class TestValidationCode(unittest.TestCase):
     def test_invalid_file(self):
         """Test that function handles missing files correctly"""
         # Try to process a non-existent file
-        result = remove_duplicates('non_existent.csv', 'test_data/output.csv')
+        result = validate_and_clean_data('non_existent.csv', 'test_data/output.csv')
         self.assertFalse(result)
         
         print("✅ Test passed: Handles missing files correctly")
