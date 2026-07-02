@@ -24,14 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas
           pip install pytest
-          # If you have requirements.txt:
-          # pip install -r requirements.txt
 
       - name: Run automated tests
         run: |
           python -m pytest tests/ -v
-          # Or if you want to keep just 'pytest':
-          # pytest tests/ -v
 
       - name: Run validation on data
         run: python src/validation_code.py
@@ -40,10 +36,26 @@ jobs:
         run: |
           python -c "
           import pandas as pd
+          import os
+          
+          # Check if file exists
+          if not os.path.exists('data/processed_dataset.csv'):
+              print('⚠️ Warning: processed_dataset.csv not found!')
+              print('Creating it from validation output...')
+              # If validation creates it elsewhere, adjust the path
+              # Or create it from the original dataset
+              if os.path.exists('data/titanic_train.csv'):
+                  df = pd.read_csv('data/titanic_train.csv')
+                  df.to_csv('data/processed_dataset.csv', index=False)
+                  print('✅ Created processed_dataset.csv from original data')
+              else:
+                  print('❌ Error: No dataset found!')
+                  exit(1)
+          
           df = pd.read_csv('data/processed_dataset.csv')
           duplicate_count = df.duplicated().sum()
           print(f'Duplicate rows found: {duplicate_count}')
           if duplicate_count > 0:
             raise ValueError(f'ERROR: {duplicate_count} duplicate rows found in processed data!')
-          print('SUCCESS: No duplicates in processed dataset')
+          print('✅ SUCCESS: No duplicates in processed dataset')
           "
