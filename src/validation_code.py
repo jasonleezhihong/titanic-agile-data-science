@@ -2,13 +2,17 @@
 import pandas as pd
 import os
 
-def remove_duplicates(input_file, output_file):
+def remove_duplicates(input_file='data/titanic_train.csv', 
+                     output_file='data/processed_dataset.csv'):
     """
     Remove duplicate rows from dataset
     
     Parameters:
     - input_file: Path to input CSV file
     - output_file: Path to output CSV file (without duplicates)
+    
+    Returns:
+    - bool: True if successful, False otherwise
     """
     print("=" * 60)
     print("🔍 DUPLICATE REMOVAL SCRIPT")
@@ -30,7 +34,6 @@ def remove_duplicates(input_file, output_file):
     
     if duplicate_count > 0:
         print(f"⚠️ Removing {duplicate_count} duplicate rows...")
-        # Remove duplicates (keep first occurrence)
         df_clean = df.drop_duplicates(keep='first')
         print(f"✅ After removal: {df_clean.shape[0]} rows")
     else:
@@ -39,10 +42,7 @@ def remove_duplicates(input_file, output_file):
     
     # Save cleaned dataset
     print(f"\n💾 Saving cleaned dataset to: {output_file}")
-    
-    # Create directory if it doesn't exist
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    
     df_clean.to_csv(output_file, index=False)
     print(f"✅ Dataset saved successfully!")
     
@@ -53,18 +53,15 @@ def remove_duplicates(input_file, output_file):
     print(f"Original rows: {df.shape[0]}")
     print(f"Duplicate rows removed: {duplicate_count}")
     print(f"Final rows: {df_clean.shape[0]}")
-    print(f"Removal percentage: {(duplicate_count/df.shape[0]*100):.2f}%")
+    if df.shape[0] > 0:
+        print(f"Removal percentage: {(duplicate_count/df.shape[0]*100):.2f}%")
     print("=" * 60)
     
     return True
 
 if __name__ == "__main__":
-    # Define input and output files
-    input_file = "data/titanic_train.csv"  # Your original dataset
-    output_file = "data/processed_dataset.csv"  # Cleaned dataset
-    
     print("\n🚀 Starting duplicate removal process...\n")
-    success = remove_duplicates(input_file, output_file)
+    success = remove_duplicates()
     
     if success:
         print("\n✅ PROCESS COMPLETED SUCCESSFULLY!")
